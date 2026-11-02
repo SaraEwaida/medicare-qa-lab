@@ -7,7 +7,7 @@ All endpoints except `POST /auth/login` and `GET /health` require `Authorization
 
 | Topic | Rule |
 |---|---|
-| Request ID | Client may send `X-Request-ID`; otherwise server generates `req_<ulid>`. Always echoed in the response header and the error body. |
+| Request ID | Client may send `X-Request-ID`; otherwise server generates `req_<16 hex chars>`. Always echoed in the response header and the error body. |
 | Errors | `{"error": {"code", "message", "details": [{"field", "issue"}], "request_id"}}` |
 | Pagination | `page` (≥1), `page_size` (1–100, default 20) → `{items, total, page, page_size}` |
 | Sorting | `sort=field` / `sort=-field` from an allow-list per resource; unknown field → 422 |

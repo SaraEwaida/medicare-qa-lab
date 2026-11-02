@@ -53,7 +53,7 @@ flowchart LR
 | D7 | **Audit log** on every create/update/delete/status change (`audit_logs`: who, what, before/after diff with redaction) | Healthcare apps need traceability; also used for "database verification" examples | — |
 | D8 | **Controlled bug injection isolated three ways**: (1) `DEMO_BUGS_ENABLED` env var, (2) per-bug flag in `demo_bug_flags`, (3) bug only fires when the request carries `X-Demo-Session` *and* targets sandbox rows (`is_sandbox = true`) | Normal app paths can never hit an injected defect, even if a flag is left on | A little extra branching in a few service functions, kept in one `demo/` module |
 | D9 | **QA metrics are computed, never hardcoded**: pass rate, coverage etc. come from `test_run_results` and ingested automation reports (`automation_runs`) | Project rule: no fake success metrics | Dashboard shows empty states until tests are actually executed |
-| D10 | **Frontend: Vite + React Router + TanStack Query + react-hook-form + zod + Recharts** | Query cache makes loading/error/empty states consistent; zod mirrors backend validation for instant feedback | Validation rules duplicated client/server; server remains the source of truth |
+| D10 | **Frontend: Vite + React Router + TanStack Query + Recharts, with small in-repo form validators** | Query cache makes loading/error/empty states consistent; client validators mirror the backend rules for instant feedback, and server 422 details map back onto the same fields | Validation rules exist on both sides; the server remains the source of truth |
 | D12 | **Enums stored as VARCHAR + named CHECK constraints** (not native PG enums) | Adding a status is a one-line migration; constraint names map to API error codes | Slightly larger storage than native enums |
 | D13 | **Single image serves API + SPA** | One free web service, one URL, same-origin auth | Static files served by Python rather than a CDN; fine for demo traffic |
 | D14 | **Coverage counts executed links only** | A case counts as covered only when an uploaded report from a real run links to it; "declared automated" is shown separately | Coverage is 0% on an empty database until reports are uploaded (seed loads the committed real reports) |
@@ -113,7 +113,7 @@ These drive both the build order and the test plan. Each will get manual test ca
 - **Error envelope** (all non-2xx):
   ```json
   {"error": {"code": "REFILL_DUPLICATE", "message": "A pending refill request already exists for RX-5781.",
-             "details": [], "request_id": "req_01J…"}}
+             "details": [], "request_id": "req_7b1f0c9a2d4e6f81"}}
   ```
 - **Pagination:** `?page=1&page_size=20` (max 100) → `{"items": [...], "total": 248, "page": 1, "page_size": 20}`.
 - **Timestamps:** UTC ISO-8601 in API, rendered in the user's local zone in the UI.
