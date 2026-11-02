@@ -70,7 +70,7 @@ export default function LoginPage() {
       <section className="flex flex-col justify-center px-6 py-10 sm:px-12 bg-card">
         <div className="w-full max-w-sm mx-auto">
           <h2 className="text-[24px] font-semibold">Sign in</h2>
-          <p className="text-ink-3 mt-1">Use a demo account below or your own credentials.</p>
+          <p className="text-ink-3 mt-1">Choose a demo account below. There is no public sign-up.</p>
           {sessionMessage && <p className="mt-4 rounded-lg bg-warn-50 px-3 py-2 text-[13px] text-warn-700">{sessionMessage}</p>}
 
           <form className="mt-6 space-y-4" onSubmit={submit} noValidate>
