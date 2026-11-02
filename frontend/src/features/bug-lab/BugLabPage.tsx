@@ -178,7 +178,7 @@ export default function BugLabPage() {
             {!last ? <p className="text-[13px] text-ink-3">Run an action to inspect the raw response.</p> : (
               <div className="space-y-2">
                 <p className="text-[13px] font-medium">{last.label}</p>
-                <p className="flex flex-wrap items-center gap-2 text-[13px]"><Badge tone={last.status >= 400 ? "bad" : "ok"}>HTTP {last.status}</Badge>{last.ms !== null && <span className="text-ink-3">{last.ms} ms</span>}</p>
+                <p className="flex flex-wrap items-center gap-2 text-[13px]" data-testid="last-status"><Badge tone={last.status >= 400 ? "bad" : "ok"}>HTTP {last.status}</Badge>{last.ms !== null && <span className="text-ink-3">{last.ms} ms</span>}</p>
                 {last.requestId && <p className="text-[13px] flex items-center gap-1">Request ID <IdChip value={last.requestId} /> <Link className="link ml-1" to={`/api-explorer?tab=trace&rid=${last.requestId}`}>Trace</Link></p>}
                 <pre className="rounded-xl bg-slab text-teal-50 p-3 text-[12px] font-mono overflow-auto max-h-80">{JSON.stringify(last.body, null, 2)}</pre>
               </div>

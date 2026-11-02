@@ -37,7 +37,7 @@ test.describe("Bug Lab: reproduce, fix, regression-test", () => {
     await row.getByRole("button", { name: "Request refill" }).click();
     await expect(row.getByTestId("latest-status")).toContainText("Pending");
     await row.getByRole("button", { name: "Approve" }).click();
-    await expect(page.getByText("HTTP 200")).toBeVisible();
+    await expect(page.getByTestId("last-status")).toContainText("HTTP 200");
     await expect(row.getByTestId("latest-status")).toContainText("Pending"); // defect: stale response
     await page.getByRole("button", { name: "Reload from server" }).click();
     await expect(row.getByTestId("latest-status")).toContainText("Approved"); // database was right all along
