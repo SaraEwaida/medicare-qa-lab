@@ -9,7 +9,7 @@ On startup the container runs migrations (`alembic upgrade head`), seeds synthet
 
 ## Steps
 
-1. **Neon:** sign up at neon.tech with GitHub → **Create project** (region close to you) → copy the connection string from **Connect**. It looks like `postgresql://user:password@ep-xxx.region.aws.neon.tech/neondb?sslmode=require`.
+1. **Neon:** sign up at neon.tech with GitHub → **Create project** (region: AWS Europe Central 1, Frankfurt — the Render service also runs in Frankfurt) → copy the connection string from **Connect**. It looks like `postgresql://user:password@ep-xxx.region.aws.neon.tech/neondb?sslmode=require`.
 2. **Render:** sign up at render.com with GitHub → **New → Blueprint** → choose `SaraEwaida/medicare-qa-lab`. Render reads `render.yaml`.
 3. When asked for `DATABASE_URL`, paste the Neon string. `JWT_SECRET` is generated automatically.
 4. **Apply.** The first build takes about 5–8 minutes. The service URL looks like `https://medicare-qa-lab.onrender.com`.
