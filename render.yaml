@@ -1,0 +1,21 @@
+# Render Blueprint: one free web service (API + frontend). The database is external (Neon free tier),
+# because Render's free PostgreSQL expires after 30 days.
+services:
+  - type: web
+    name: medicare-qa-lab
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false # paste the Neon connection string in the Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENVIRONMENT
+        value: demo
+      - key: DEMO_BUGS_ENABLED
+        value: "true"
+      - key: CORS_ORIGINS
+        value: ""

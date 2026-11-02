@@ -1,6 +1,6 @@
 # API design
 
-Base path `/api/v1`. JSON only. Swagger UI at `/docs`, OpenAPI at `/openapi.json`.
+Base path `/api/v1`. JSON only. Swagger UI at `/api/docs`, ReDoc at `/api/redoc`, OpenAPI at `/api/openapi.json`.
 All endpoints except `POST /auth/login` and `GET /health` require `Authorization: Bearer <token>`.
 
 ## Conventions
@@ -36,7 +36,10 @@ All endpoints except `POST /auth/login` and `GET /health` require `Authorization
 |---|---|---|
 | POST | `/auth/login` | Email + password → `{access_token, token_type, expires_in, user}` |
 | GET | `/auth/me` | Current user + permission list (frontend builds nav from it) |
+| GET | `/users` | Active users for assignment (support/QA) |
 | GET | `/health` | Liveness + DB connectivity |
+| GET | `/search?q=` | Role-aware global search (patients, RX codes, tickets, bugs, test cases) |
+| GET | `/notifications` | Items needing attention for the user's role, derived from live data |
 
 ### Dashboard
 | Method | Path | Purpose |
@@ -96,7 +99,7 @@ Ticket state machine: `open → investigating → escalated → investigating`, 
 | Method | Path | Purpose |
 |---|---|---|
 | GET/POST | `/qa/test-cases` | List (filter module/type/automated) / create with steps |
-| GET/PATCH/DELETE | `/qa/test-cases/{id}` | Detail / edit / archive (soft) |
+| GET/PUT/DELETE | `/qa/test-cases/{id}` | Detail / replace (incl. steps) / archive (soft) |
 | GET/POST | `/qa/test-runs` | List / start a run with selected case IDs |
 | GET | `/qa/test-runs/{id}` | Run with results and computed stats |
 | PATCH | `/qa/test-runs/{id}/results/{result_id}` | Record Pass/Fail/Blocked + actual result |
@@ -113,7 +116,10 @@ Ticket state machine: `open → investigating → escalated → investigating`, 
 | GET | `/logs` | Filter `request_id`, `level`, `status_code`, `path`, `from`, `to` |
 | GET | `/logs/requests/{request_id}` | All log lines for one request (trace view) |
 | GET | `/audit` | Filter `entity_type`, `entity_id`, `actor_id` |
-| GET | `/api-catalog` | Example request/response pairs for the troubleshooting docs page |
+| GET | `/logs/stats` | 24 h totals, error counts, p95 latency, most frequent errors |
+| GET | `/diagnostics/db-checks` | Read-only SQL consistency checks (rows that violate each rule) |
+
+The API console with request/response examples lives in the frontend (API & Logs → API console) and sends real requests.
 
 ### Bug Lab (controlled demo)
 | Method | Path | Purpose |
@@ -121,8 +127,13 @@ Ticket state machine: `open → investigating → escalated → investigating`, 
 | GET | `/demo/bugs` | List injectable defects + state |
 | POST | `/demo/bugs/{key}/toggle` | Enable/disable a defect |
 | POST | `/demo/sandbox/reset` | Wipe and reseed sandbox rows |
+| GET | `/demo/sandbox/patients?q=` | Sandbox patient search (search defect applies here) |
+| GET | `/demo/sandbox/prescriptions` | Sandbox prescriptions with refill history |
+| POST | `/demo/sandbox/refills?prescription_id=` | Submit a sandbox refill (honours `Idempotency-Key`) |
+| POST | `/demo/sandbox/refills/{id}/approve` | Approve a sandbox refill |
+| GET | `/demo/sandbox/refills/{id}` | Re-read a sandbox refill |
 
-Planned defects (keys): `refill_status_stale` (UI does not invalidate cache after approve), `refill_validation_500` (unhandled error returns 500 instead of 422), `search_case_sensitive` (patient search ignores lowercase matches), `refill_double_submit` (idempotency and UI guard bypassed, so duplicates are created on sandbox data).
+Defects (keys): `refill_status_stale` (approve returns a pre-update snapshot, so the UI shows stale status), `refill_boundary_422` (off-by-one rejects a refill when exactly 1 remains), `search_case_sensitive` (patient search ignores lowercase matches), `refill_double_submit` (idempotency and UI guard bypassed, so duplicates are created on sandbox data).
 
 ## Role-based access matrix
 
@@ -131,7 +142,7 @@ Planned defects (keys): `refill_status_stale` (UI does not invalidate cache afte
 | Permission | Pharmacist | Support Engineer | QA Engineer |
 |---|---|---|---|
 | Dashboard | ✅ | ✅ | ✅ |
-| Patients: read | ✅ | 👁 (masked contact info) | 👁 |
+| Patients: read | ✅ | 👁 (masked contact info) | 👁 (masked contact info) |
 | Patients: create / edit / deactivate | ✅ | ❌ | ❌ |
 | Prescriptions: read | ✅ | 👁 | 👁 |
 | Prescriptions: create / edit / status | ✅ | ❌ | ❌ |
@@ -139,12 +150,14 @@ Planned defects (keys): `refill_status_stale` (UI does not invalidate cache afte
 | Refills: approve / reject / dispense | ✅ | ❌ | ❌ |
 | Tickets: create | ✅ | ✅ | ✅ |
 | Tickets: read own | ✅ | ✅ | ✅ |
-| Tickets: read all, assign, transition, internal notes | ❌ | ✅ | 👁 (read all + internal notes) |
+| Tickets: read all, internal notes | ❌ | ✅ | 👁 |
+| Tickets: assign, transition, edit, add notes | ❌ | ✅ | ❌ |
 | Tickets: convert to bug | ❌ | ✅ | ✅ |
 | QA test cases / runs: write | ❌ | ❌ | ✅ |
 | QA test cases / runs / metrics: read | ❌ | 👁 | ✅ |
 | Bug reports: create / edit | ❌ | ✅ create only | ✅ |
 | Logs & audit | ❌ | ✅ | ✅ |
 | Bug Lab toggles, sandbox reset | ❌ | ❌ | ✅ |
+| Bug Lab sandbox actions (search, refill, approve) | ❌ | ✅ | ✅ |
 
 The frontend reads the permission list from `/auth/me` to build navigation. Every rule above is also enforced and tested on the API.

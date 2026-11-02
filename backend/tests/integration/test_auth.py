@@ -29,6 +29,13 @@ def test_tc003_login_rate_limited_after_five_attempts(client):
     assert int(r.headers["Retry-After"]) > 0
 
 
+def test_successful_logins_do_not_trigger_rate_limit(client):
+    """Regression: the limiter used to count successful sign-ins, locking out users who signed in 5x a minute."""
+    for _ in range(8):
+        r = client.post(f"{API}/auth/login", json={"email": "support@medicare.example.com", "password": DEMO_PASSWORD})
+        assert r.status_code == 200
+
+
 def test_tc004_missing_and_invalid_token_return_401_with_request_id(client):
     for headers in ({}, {"Authorization": "Bearer invalid"}):
         r = client.get(f"{API}/patients", headers=headers)

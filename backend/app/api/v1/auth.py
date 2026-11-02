@@ -19,13 +19,16 @@ router = APIRouter(tags=["Auth & system"])
 @router.post("/auth/login", response_model=TokenOut)
 def login(body: LoginRequest, request: Request, db: Session = Depends(get_db)):
     email = body.email.lower()
-    login_limiter.check(f"{request.client.host if request.client else '-'}:{email}")
+    limiter_key = f"{request.client.host if request.client else '-'}:{email}"
+    login_limiter.check(limiter_key)
     user = db.scalars(select(User).where(User.email == email)).first()
     if user is None or not user.is_active or not verify_password(body.password, user.password_hash):
+        login_limiter.record_failure(limiter_key)
         audit(db, user, "login_failed", "user", user.id if user else None, {"reason": "invalid_credentials"})
         db.commit()
         # Same message whether the email exists or not (no account enumeration).
         raise HTTPException(status_code=401, detail="Invalid email or password.")
+    login_limiter.reset(limiter_key)  # only failed attempts count toward the limit
     user.last_login_at = datetime.now(UTC)
     request.state.user_id, request.state.user_role = user.id, user.role.value
     audit(db, user, "login", "user", user.id)

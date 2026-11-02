@@ -1,0 +1,11 @@
+**/node_modules
+**/.venv
+**/__pycache__
+**/dist
+**/results
+**/test-results
+.git
+e2e
+postman
+docs
+*.md

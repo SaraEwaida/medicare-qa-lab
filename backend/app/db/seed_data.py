@@ -261,7 +261,7 @@ TEST_CASES = [
      "steps": [("Trigger any error and copy the request ID from the error toast.", None),
                ("Logs Explorer → paste the request ID → Trace.", None)],
      "expected": "The trace shows method, path, status, duration and redacted context for that request.",
-     "automation": None},
+     "automation": "backend/tests/integration/test_logging.py"},
     {"title": "Logs never contain patient names, emails or phone numbers", "module": "security", "type": "security",
      "priority": "p1", "preconditions": "Patient created with known name/email/phone.",
      "steps": [("Search the patient directory with the patient's name.", None),
@@ -277,5 +277,5 @@ TEST_CASES = [
      "priority": "p2", "preconditions": Q + " Several refills approved/rejected during testing.",
      "steps": [("Logs Explorer → Database checks → Run.", None)],
      "expected": "All checks pass (0 violating rows), e.g. refills_remaining = authorized − approved refills.",
-     "automation": None},
+     "automation": "backend/tests/integration/test_logging.py"},
 ]

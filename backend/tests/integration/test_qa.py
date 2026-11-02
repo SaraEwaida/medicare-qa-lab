@@ -80,10 +80,13 @@ def test_support_can_create_but_not_edit_bug(client, auth):
 
 
 def test_automation_ingest_and_coverage(client, auth):
+    new_case = client.post(f"{API}/qa/test-cases", headers=auth("qa"), json={
+        "title": "Coverage link check", "module": "qa", "expected_result": "Linked", "steps": [{"action": "Upload report"}]}).json()
+    code = new_case["case_code"]
     before = client.get(f"{API}/qa/metrics", headers=auth("qa")).json()["coverage"]["covered_cases"]
     body = {"framework": "pytest", "suite_name": "unit-test-ingest", "started_at": datetime.now(UTC).isoformat(),
             "duration_ms": 900, "results": [
-                {"test_name": "test_tc030_db_checks", "status": "passed", "duration_ms": 10, "case_code": "TC-030"},
+                {"test_name": "test_coverage_link", "status": "passed", "duration_ms": 10, "case_code": code},
                 {"test_name": "test_other", "status": "failed", "duration_ms": 5, "error_message": "AssertionError"},
                 {"test_name": "test_skip", "status": "skipped", "duration_ms": 0}]}
     resp = client.post(f"{API}/qa/automation-runs", json=body, headers=auth("qa"))
@@ -91,9 +94,9 @@ def test_automation_ingest_and_coverage(client, auth):
     run = resp.json()
     assert (run["total"], run["passed"], run["failed"], run["skipped"]) == (3, 1, 1, 1)
     detail = client.get(f"{API}/qa/automation-runs/{run['id']}", headers=auth("qa")).json()
-    assert detail["results"][0]["case_code"] == "TC-030"
+    assert detail["results"][0]["case_code"] == code
     m = client.get(f"{API}/qa/metrics", headers=auth("qa")).json()
-    assert m["coverage"]["covered_cases"] == before + 1  # TC-030 (manual-only until now) is linked by the report
+    assert m["coverage"]["covered_cases"] == before + 1  # the new case becomes covered only once a report links it
     bad = {**body, "results": [{"test_name": "x", "status": "flaky", "duration_ms": 1}]}
     assert client.post(f"{API}/qa/automation-runs", json=bad, headers=auth("qa")).status_code == 422
 

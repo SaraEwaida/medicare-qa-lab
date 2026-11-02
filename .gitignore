@@ -12,3 +12,8 @@ coverage/
 # backend
 backend/.venv/
 *.egg-info/
+backend/results/
+postman/results/
+e2e/results/
+e2e/test-results/
+e2e/node_modules/

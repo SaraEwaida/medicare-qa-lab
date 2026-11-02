@@ -242,6 +242,39 @@ DEMO_BUG_REPORTS = [
 ]
 
 
+# Real defects found while testing this application (not injected).
+FOUND_BUGS = [
+    {"regression": "TC-003", "severity": "major", "priority": "p1", "status": "verified",
+     "title": "Login rate limiter counts successful sign-ins and locks out legitimate users",
+     "description": "Found by the Playwright suite on 2026-11-02: after five successful logins within a minute "
+                    "(e.g. a pharmacist switching tabs or devices), the sixth sign-in returned 429 even with the "
+                    "correct password.",
+     "environment": "local · MediCare QA Lab 1.0.0 · Chromium 1.63 (Playwright)",
+     "preconditions": "Pharmacist account. No failed login attempts.",
+     "steps": "1. Sign in as pharmacist and sign out.\n2. Repeat four more times within 60 seconds.\n"
+              "3. Sign in a sixth time with the correct password.",
+     "expected": "Sign-in succeeds. Only failed attempts count toward the limit of 5 per minute.",
+     "actual": "HTTP 429 RATE_LIMITED: 'Too many login attempts.' The E2E run showed the login page stuck on /login.",
+     "root_cause": "LoginRateLimiter.check() appended every attempt to the sliding window before the password was "
+                   "verified, so successful logins consumed the budget meant for failures.",
+     "fix": "check() now only reads the window; record_failure() is called on bad credentials and a successful "
+            "login resets the key. Regression: test_successful_logins_do_not_trigger_rate_limit and "
+            "test_tc003_login_rate_limited_after_five_attempts; full Playwright suite green (17/17).",
+     "evidence": [{"type": "test", "ref": "e2e/tests/refills.spec.ts (first failure)"},
+                  {"type": "doc", "ref": "docs/bug-reports/BUG-005-login-rate-limiter.md"}]},
+]
+
+
+def seed_found_bugs(db: Session, users: dict[str, User], cases: dict[str, TestCase]) -> None:
+    for b in FOUND_BUGS:
+        db.add(BugReport(
+            title=b["title"], description=b["description"], environment=b["environment"], preconditions=b["preconditions"],
+            steps_to_reproduce=b["steps"], expected_behavior=b["expected"], actual_behavior=b["actual"],
+            severity=b["severity"], priority=b["priority"], status=b["status"], root_cause=b["root_cause"],
+            fix_notes=b["fix"], regression_case_id=cases[b["regression"]].id, evidence=b["evidence"],
+            reported_by=users["qa"].id))
+
+
 def seed_demo_bug_reports(db: Session, users: dict[str, User], cases: dict[str, TestCase]) -> None:
     for b in DEMO_BUG_REPORTS:
         db.add(BugReport(
@@ -306,6 +339,7 @@ def run(reset: bool = False) -> dict:
             seed_tickets(db, rng, users)
             cases = seed_test_cases(db, users)
             seed_demo_bug_reports(db, users, cases)
+            seed_found_bugs(db, users, cases)
             created = True
         ensure_flags(db)
         sandbox = reset_sandbox(db)

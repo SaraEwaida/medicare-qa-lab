@@ -1,4 +1,4 @@
-# MediCare QA Lab — Architecture (Phase 1)
+# MediCare QA Lab — Architecture
 
 > Synthetic data only. This project is a demonstration and is **not** HIPAA-compliant or independently audited.
 
@@ -38,7 +38,7 @@ flowchart LR
     PY -. "JUnit/JSON report ingest" .-> ROUTERS
 ```
 
-Three containers in Docker Compose: `frontend` (Vite build served by nginx, which also reverse-proxies `/api`), `backend` (uvicorn), `db` (postgres:16). Same-origin through the proxy means no CORS complexity in production; CORS is enabled only for local dev.
+**As built:** one Docker image. FastAPI serves the API under `/api` and the built React app for every other path, so the browser talks to a single origin and needs no CORS in production (CORS is enabled only for the Vite dev server). Docker Compose runs that image plus `postgres:16`. This replaced the planned nginx + backend split: it gives one service and one URL on free hosting, with nothing to lose at this scale. See [deployment.md](deployment.md).
 
 ## 2. Key architectural decisions
 
@@ -54,7 +54,12 @@ Three containers in Docker Compose: `frontend` (Vite build served by nginx, whic
 | D8 | **Controlled bug injection isolated three ways**: (1) `DEMO_BUGS_ENABLED` env var, (2) per-bug flag in `demo_bug_flags`, (3) bug only fires when the request carries `X-Demo-Session` *and* targets sandbox rows (`is_sandbox = true`) | Normal app paths can never hit an injected defect, even if a flag is left on | A little extra branching in a few service functions, kept in one `demo/` module |
 | D9 | **QA metrics are computed, never hardcoded**: pass rate, coverage etc. come from `test_run_results` and ingested automation reports (`automation_runs`) | Project rule: no fake success metrics | Dashboard shows empty states until tests are actually executed |
 | D10 | **Frontend: Vite + React Router + TanStack Query + react-hook-form + zod + Recharts** | Query cache makes loading/error/empty states consistent; zod mirrors backend validation for instant feedback | Validation rules duplicated client/server; server remains the source of truth |
+| D12 | **Enums stored as VARCHAR + named CHECK constraints** (not native PG enums) | Adding a status is a one-line migration; constraint names map to API error codes | Slightly larger storage than native enums |
+| D13 | **Single image serves API + SPA** | One free web service, one URL, same-origin auth | Static files served by Python rather than a CDN; fine for demo traffic |
+| D14 | **Coverage counts executed links only** | A case counts as covered only when an uploaded report from a real run links to it; "declared automated" is shown separately | Coverage is 0% on an empty database until reports are uploaded (seed loads the committed real reports) |
 | D11 | **Business identifiers separate from PKs**: `P-1024`, `RX-5781`, `SUP-1042`, `TC-001`, `BUG-007` | Human-readable IDs for tickets/bug reports; integer PKs stay internal | Generated via Postgres sequences + prefix |
+
+**Masking:** both non-pharmacist roles (Support and QA) see masked patient contact details, following the minimum-necessary principle. The original plan masked only Support.
 
 **Roles:** the brief defines three roles (Pharmacist, Support Engineer, QA Engineer). The reference image also mentions Admin; I'm leaving it out to keep the scope tight. Settings that would need an admin (demo-bug toggles, user list) go to QA Engineer.
 
@@ -64,43 +69,26 @@ Three containers in Docker Compose: `frontend` (Vite build served by nginx, whic
 medicare-qa-lab/
 ├── backend/
 │   ├── app/
-│   │   ├── main.py               # app factory, middleware, router registration
-│   │   ├── core/                 # config, security (JWT, hashing), permissions, logging, redaction
-│   │   ├── db/                   # engine, session, base, seed
-│   │   ├── models/               # SQLAlchemy models (one file per aggregate)
+│   │   ├── main.py               # app factory: middleware, routers, SPA serving
+│   │   ├── core/                 # config, security (JWT, bcrypt, rate limit), permissions, redaction, errors, logging middleware
+│   │   ├── db/                   # session, seed.py, seed_data.py (incl. the 30 test cases), reports/ (real test results)
+│   │   ├── models/               # SQLAlchemy models + enums
 │   │   ├── schemas/              # Pydantic request/response models
-│   │   ├── services/             # business logic (refill workflow, ticket escalation, metrics)
-│   │   ├── api/v1/               # routers: auth, patients, prescriptions, refills, tickets, qa, logs, dashboard, demo
-│   │   └── demo/                 # bug-injection registry (isolated)
+│   │   ├── services/             # refill workflow, ticket transitions, QA metrics, audit
+│   │   ├── api/v1/               # auth, dashboard, patients, prescriptions, tickets, qa, logs, demo
+│   │   └── demo/                 # Bug Lab: defect registry + sandbox data
 │   ├── alembic/                  # migrations
-│   ├── tests/
-│   │   ├── unit/
-│   │   └── integration/          # real Postgres via test database
-│   ├── pyproject.toml
-│   └── Dockerfile
-├── frontend/
-│   ├── src/
-│   │   ├── app/                  # router, providers, auth context
-│   │   ├── components/ui/        # shadcn/ui primitives
-│   │   ├── components/           # shared: DataTable, StatusBadge, PageHeader, EmptyState, ErrorState
-│   │   ├── features/             # dashboard, patients, prescriptions, tickets, qa, api-logs, bug-lab, settings
-│   │   ├── lib/                  # api client (request-ID aware), zod schemas, formatters
-│   │   └── main.tsx
-│   ├── Dockerfile                # build + nginx
-│   └── nginx.conf
-├── e2e/                          # Playwright tests + config
-├── postman/                      # collection + environment JSON
-├── docs/
-│   ├── architecture.md           # this file
-│   ├── database.md
-│   ├── api.md
-│   ├── roadmap.md
-│   ├── schema.sql                # validated DDL draft (Alembic becomes source of truth in Phase 3)
-│   ├── test-cases/               # manual test cases (Phase 4)
-│   ├── bug-reports/              # documented defects (Phase 5)
-│   └── support-guide.md          # troubleshooting playbook (Phase 5)
-├── docker-compose.yml
-├── .env.example
+│   ├── tests/unit, tests/integration
+│   └── docker-entrypoint.sh
+├── frontend/src/
+│   ├── components/               # ui.tsx (shadcn-style primitives), common.tsx, AppShell.tsx
+│   ├── features/                 # auth, dashboard, patients, prescriptions, tickets, qa, api-explorer, bug-lab, settings
+│   └── lib/                      # API client (request IDs, error envelope), auth context, types
+├── e2e/                          # Playwright tests
+├── postman/                      # collection, environment, generator
+├── scripts/                      # run_all_tests.sh, upload_test_report.py, generate_test_docs.py
+├── docs/                         # architecture, database, api, support guide, deployment, test cases, bug reports
+├── Dockerfile, docker-compose.yml, render.yaml
 └── README.md
 ```
 

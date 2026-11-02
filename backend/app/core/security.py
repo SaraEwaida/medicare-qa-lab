@@ -86,6 +86,7 @@ class LoginRateLimiter:
         self._hits: dict[str, deque[float]] = defaultdict(deque)
 
     def check(self, key: str) -> None:
+        """Raise 429 if this key already has too many *failed* attempts in the last minute."""
         limit = get_settings().login_attempts_per_minute
         now = time.monotonic()
         q = self._hits[key]
@@ -95,7 +96,9 @@ class LoginRateLimiter:
             retry = int(60 - (now - q[0])) + 1
             raise HTTPException(status_code=429, detail="Too many login attempts. Try again shortly.",
                                 headers={"Retry-After": str(retry)})
-        q.append(now)
+
+    def record_failure(self, key: str) -> None:
+        self._hits[key].append(time.monotonic())
 
     def reset(self, key: str | None = None) -> None:
         if key is None:

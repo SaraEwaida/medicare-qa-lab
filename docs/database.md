@@ -1,6 +1,6 @@
 # Database design
 
-PostgreSQL 16. 18 tables in 5 groups. The full DDL is in [`schema.sql`](schema.sql). Constraint checks are in [`schema-checks.sql`](schema-checks.sql) (validated against PostgreSQL 16: all 12 negative cases rejected as intended).
+PostgreSQL 16. 18 tables in 5 groups. The migration in `backend/alembic/versions/0001_initial_schema.py` is the source of truth. [`schema.sql`](schema.sql) is the Phase 1 design draft (it uses native enums and CITEXT; the build stores enums as VARCHAR + named CHECK constraints and lower-cases emails in the application). Constraint checks are in [`schema-checks.sql`](schema-checks.sql) (validated against PostgreSQL 16: all 12 negative cases rejected as intended).
 
 ## Entity relationships
 

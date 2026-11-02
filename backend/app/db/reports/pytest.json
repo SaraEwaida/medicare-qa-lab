@@ -1,0 +1,930 @@
+{
+ "framework": "pytest",
+ "suite_name": "Backend unit + integration (pytest)",
+ "commit_sha": "716bd81dc79a8155b76ac38c96f85e8ebc3f71f0",
+ "branch": "main",
+ "started_at": "2026-11-02T20:18:44.483434+02:00",
+ "duration_ms": 8804,
+ "results": [
+  {
+   "test_name": "tests.integration.test_auth::test_tc001_login_success_returns_token_and_user",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 1390,
+   "error_message": null,
+   "case_code": "TC-001"
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_tc002_wrong_password_generic_401",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 100,
+   "error_message": null,
+   "case_code": "TC-002"
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_tc003_login_rate_limited_after_five_attempts",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 427,
+   "error_message": null,
+   "case_code": "TC-003"
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_successful_logins_do_not_trigger_rate_limit",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 682,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_tc004_missing_and_invalid_token_return_401_with_request_id",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": "TC-004"
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_client_supplied_request_id_is_echoed",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 262,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_login_validation_error_for_bad_email",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 7,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_malformed_json_returns_400",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 7,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_me_returns_permissions",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 14,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_unknown_api_route_returns_json_404",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 7,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_auth::test_health",
+   "file_path": "tests/integration/test_auth.py",
+   "status": "passed",
+   "duration_ms": 5,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_demo_isolation::test_bug_reproduces_refill_status_stale",
+   "file_path": "tests/integration/test_demo_isolation.py",
+   "status": "passed",
+   "duration_ms": 228,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_demo_isolation::test_bug_reproduces_boundary_422",
+   "file_path": "tests/integration/test_demo_isolation.py",
+   "status": "passed",
+   "duration_ms": 168,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_demo_isolation::test_bug_reproduces_case_sensitive_search",
+   "file_path": "tests/integration/test_demo_isolation.py",
+   "status": "passed",
+   "duration_ms": 147,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_demo_isolation::test_bug_reproduces_double_submit",
+   "file_path": "tests/integration/test_demo_isolation.py",
+   "status": "passed",
+   "duration_ms": 172,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_demo_isolation::test_tc029_enabled_bugs_do_not_affect_normal_paths",
+   "file_path": "tests/integration/test_demo_isolation.py",
+   "status": "passed",
+   "duration_ms": 398,
+   "error_message": null,
+   "case_code": "TC-029"
+  },
+  {
+   "test_name": "tests.integration.test_demo_isolation::test_bugs_off_sandbox_behaves_correctly",
+   "file_path": "tests/integration/test_demo_isolation.py",
+   "status": "passed",
+   "duration_ms": 121,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_demo_isolation::test_sandbox_rows_unreachable_without_demo_header",
+   "file_path": "tests/integration/test_demo_isolation.py",
+   "status": "passed",
+   "duration_ms": 17,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_demo_isolation::test_master_switch_blocks_bugs",
+   "file_path": "tests/integration/test_demo_isolation.py",
+   "status": "passed",
+   "duration_ms": 164,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_logging::test_tc028_logs_contain_no_patient_pii",
+   "file_path": "tests/integration/test_logging.py",
+   "status": "passed",
+   "duration_ms": 33,
+   "error_message": null,
+   "case_code": "TC-028"
+  },
+  {
+   "test_name": "tests.integration.test_logging::test_request_log_fields",
+   "file_path": "tests/integration/test_logging.py",
+   "status": "passed",
+   "duration_ms": 10,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_logging::test_tc027_trace_by_request_id",
+   "file_path": "tests/integration/test_logging.py",
+   "status": "passed",
+   "duration_ms": 31,
+   "error_message": null,
+   "case_code": "TC-027"
+  },
+  {
+   "test_name": "tests.integration.test_logging::test_logs_filters",
+   "file_path": "tests/integration/test_logging.py",
+   "status": "passed",
+   "duration_ms": 33,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_logging::test_login_failure_audited_without_password",
+   "file_path": "tests/integration/test_logging.py",
+   "status": "passed",
+   "duration_ms": 92,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_logging::test_tc030_db_consistency_checks_pass",
+   "file_path": "tests/integration/test_logging.py",
+   "status": "passed",
+   "duration_ms": 21,
+   "error_message": null,
+   "case_code": "TC-030"
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_tc007_create_patient",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 22,
+   "error_message": null,
+   "case_code": "TC-007"
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_tc008_future_dob_rejected_today_accepted",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 35,
+   "error_message": null,
+   "case_code": "TC-008"
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_tc009_duplicate_patient_case_insensitive",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 18,
+   "error_message": null,
+   "case_code": "TC-009"
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_tc010_search_is_case_insensitive",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 69,
+   "error_message": null,
+   "case_code": "TC-010"
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_search_by_full_name_and_code",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 56,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_tc011_edit_writes_redacted_audit",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 37,
+   "error_message": null,
+   "case_code": "TC-011"
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_tc012_stale_write_conflict",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 47,
+   "error_message": null,
+   "case_code": "TC-012"
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_deactivate_blocked_with_active_prescription",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 44,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_deactivate_and_reactivate",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 62,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_invalid_sort_and_pagination_bounds",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 31,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_validation_envelope_lists_fields",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 10,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_patients::test_sandbox_patients_hidden_from_normal_api",
+   "file_path": "tests/integration/test_patients.py",
+   "status": "passed",
+   "duration_ms": 28,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_tc014_create_prescription_sets_remaining",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 35,
+   "error_message": null,
+   "case_code": "TC-014"
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_tc015_quantity_boundaries[0-422]",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 25,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_tc015_quantity_boundaries[1-201]",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 43,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_tc015_quantity_boundaries[1000-201]",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 42,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_tc015_quantity_boundaries[1001-422]",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 31,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_refill_count_boundaries[-1-422]",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 28,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_refill_count_boundaries[0-201]",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 32,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_refill_count_boundaries[12-201]",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 34,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_refill_count_boundaries[13-422]",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 21,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_tc016_duplicate_active_prescription",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 50,
+   "error_message": null,
+   "case_code": "TC-016"
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_end_date_before_start_rejected",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 26,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_unknown_patient_or_medication",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 44,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_status_transitions",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 121,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_cancel_closes_pending_refill",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 77,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_inactive_patient_cannot_receive_prescription",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 55,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_prescriptions::test_list_filters",
+   "file_path": "tests/integration/test_prescriptions.py",
+   "status": "passed",
+   "duration_ms": 84,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_qa::test_create_test_case_with_steps",
+   "file_path": "tests/integration/test_qa.py",
+   "status": "passed",
+   "duration_ms": 22,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_qa::test_tc025_results_and_pass_rate",
+   "file_path": "tests/integration/test_qa.py",
+   "status": "passed",
+   "duration_ms": 167,
+   "error_message": null,
+   "case_code": "TC-025"
+  },
+  {
+   "test_name": "tests.integration.test_qa::test_completed_run_is_locked",
+   "file_path": "tests/integration/test_qa.py",
+   "status": "passed",
+   "duration_ms": 64,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_qa::test_run_rejects_unknown_cases",
+   "file_path": "tests/integration/test_qa.py",
+   "status": "passed",
+   "duration_ms": 10,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_qa::test_bug_from_failed_result_and_verification_rules",
+   "file_path": "tests/integration/test_qa.py",
+   "status": "passed",
+   "duration_ms": 155,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_qa::test_support_can_create_but_not_edit_bug",
+   "file_path": "tests/integration/test_qa.py",
+   "status": "passed",
+   "duration_ms": 28,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_qa::test_automation_ingest_and_coverage",
+   "file_path": "tests/integration/test_qa.py",
+   "status": "passed",
+   "duration_ms": 106,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_qa::test_last_status_on_test_cases",
+   "file_path": "tests/integration/test_qa.py",
+   "status": "passed",
+   "duration_ms": 72,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_tc005_support_cannot_approve_refill",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 86,
+   "error_message": null,
+   "case_code": "TC-005"
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_role_restrictions_return_403[support-post-/patients-body0]",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_role_restrictions_return_403[qa-post-/prescriptions-body1]",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_role_restrictions_return_403[pharmacist-get-/logs-None]",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 8,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_role_restrictions_return_403[pharmacist-get-/qa/test-cases-None]",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 13,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_role_restrictions_return_403[pharmacist-post-/demo/sandbox/reset-None]",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 12,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_role_restrictions_return_403[support-post-/demo/sandbox/reset-None]",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 12,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_role_restrictions_return_403[support-post-/qa/test-cases-body6]",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 12,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_role_restrictions_return_403[qa-post-/tickets/1/status-body7]",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_tc013_non_pharmacist_sees_masked_patient",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 50,
+   "error_message": null,
+   "case_code": "TC-013"
+  },
+  {
+   "test_name": "tests.integration.test_rbac::test_pharmacist_global_search_cannot_see_bugs",
+   "file_path": "tests/integration/test_rbac.py",
+   "status": "passed",
+   "duration_ms": 19,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_tc017_approve_updates_status_and_decrements",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 90,
+   "error_message": null,
+   "case_code": "TC-017"
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_tc018_duplicate_pending_refill_rejected",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 72,
+   "error_message": null,
+   "case_code": "TC-018"
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_tc018_idempotency_key_replays_original",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 67,
+   "error_message": null,
+   "case_code": "TC-018"
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_concurrent_double_submit_creates_one_row",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 67,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_tc019_boundary_one_remaining_ok_zero_rejected",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 123,
+   "error_message": null,
+   "case_code": "TC-019"
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_tc020_reject_requires_reason",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 80,
+   "error_message": null,
+   "case_code": "TC-020"
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_invalid_refill_transitions",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 108,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_on_hold_prescription_rejects_refill",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 65,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_refills::test_refill_queue_filter",
+   "file_path": "tests/integration/test_refills.py",
+   "status": "passed",
+   "duration_ms": 64,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_tc021_create_ticket_with_diagnostics",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 32,
+   "error_message": null,
+   "case_code": "TC-021"
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_ticket_validation",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 9,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_tc022_workflow_enforces_transitions",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 158,
+   "error_message": null,
+   "case_code": "TC-022"
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_reopen_resolved_ticket",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 96,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_tc023_internal_notes_hidden_from_pharmacist",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 88,
+   "error_message": null,
+   "case_code": "TC-023"
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_pharmacist_only_sees_own_tickets",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 64,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_assign_validation",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 60,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_tc024_convert_ticket_to_bug",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 50,
+   "error_message": null,
+   "case_code": "TC-024"
+  },
+  {
+   "test_name": "tests.integration.test_tickets::test_filters",
+   "file_path": "tests/integration/test_tickets.py",
+   "status": "passed",
+   "duration_ms": 19,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_redact_masks_sensitive_keys_recursively",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 1,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_redact_text_scrubs_emails_phones_and_tokens",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_redact_keeps_none_for_missing_sensitive_values",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_masking_helpers",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permission_matrix[pharmacist-refills:review-True]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permission_matrix[support_engineer-refills:review-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 1,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permission_matrix[qa_engineer-refills:review-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 1,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permission_matrix[support_engineer-tickets:manage-True]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permission_matrix[qa_engineer-tickets:manage-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 1,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permission_matrix[qa_engineer-demo:manage-True]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permission_matrix[pharmacist-logs:read-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permission_matrix[pharmacist-unknown:permission-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_permissions_for_is_sorted_and_role_specific",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_ticket_transitions_closed_is_terminal_and_open_cannot_resolve",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_run_stats_pass_rate_excludes_not_run",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_run_stats_empty_run",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_failed_result_requires_actual_result",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_patient_dob_validation[2999-01-01-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 1,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_patient_dob_validation[1899-12-31-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_patient_dob_validation[1985-06-14-True]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "tests.unit.test_units::test_tc015_prescription_quantity_boundaries_schema[0-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 1,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "tests.unit.test_units::test_tc015_prescription_quantity_boundaries_schema[1-True]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "tests.unit.test_units::test_tc015_prescription_quantity_boundaries_schema[1000-True]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 0,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "tests.unit.test_units::test_tc015_prescription_quantity_boundaries_schema[1001-False]",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 1,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "tests.unit.test_units::test_database_url_normalization",
+   "file_path": "tests/unit/test_units.py",
+   "status": "passed",
+   "duration_ms": 5,
+   "error_message": null,
+   "case_code": null
+  }
+ ]
+}

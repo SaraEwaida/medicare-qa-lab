@@ -1,0 +1,1397 @@
+{
+  "info": {
+    "_postman_id": "00000000-0000-0000-0000-0000013528ee",
+    "name": "MediCare QA Lab API",
+    "description": "End-to-end API checks for MediCare QA Lab (synthetic data). Run in order: requests chain IDs through collection variables.\n\nnpx newman run postman/MediCare-QA-Lab.postman_collection.json -e postman/local.postman_environment.json",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Auth & system",
+      "item": [
+        {
+          "name": "Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/health",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "health"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 and database ok\", () => { pm.response.to.have.status(200); pm.expect(pm.response.json().database).to.eql(\"ok\"); });",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login as pharmacist",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"pharmacist@medicare.example.com\",\n  \"password\": \"{{demo_password}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"returns bearer token\", () => { pm.expect(b.token_type).to.eql(\"bearer\"); pm.expect(b.access_token).to.be.a(\"string\"); });",
+                  "pm.test(\"role is pharmacist\", () => pm.expect(b.user.email).to.include(\"pharmacist@\"));",
+                  "pm.collectionVariables.set(\"pharmacist_token\", b.access_token);",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login as support",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"support@medicare.example.com\",\n  \"password\": \"{{demo_password}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"returns bearer token\", () => { pm.expect(b.token_type).to.eql(\"bearer\"); pm.expect(b.access_token).to.be.a(\"string\"); });",
+                  "pm.test(\"role is support\", () => pm.expect(b.user.email).to.include(\"support@\"));",
+                  "pm.collectionVariables.set(\"support_token\", b.access_token);",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login as qa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa@medicare.example.com\",\n  \"password\": \"{{demo_password}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"returns bearer token\", () => { pm.expect(b.token_type).to.eql(\"bearer\"); pm.expect(b.access_token).to.be.a(\"string\"); });",
+                  "pm.test(\"role is qa\", () => pm.expect(b.user.email).to.include(\"qa@\"));",
+                  "pm.collectionVariables.set(\"qa_token\", b.access_token);",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login with wrong password \u2192 401 [TC-002]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"pharmacist@medicare.example.com\",\n  \"password\": \"wrong\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"generic message\", () => pm.expect(pm.response.json().error.message).to.eql(\"Invalid email or password.\"));",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Me (permissions)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"pharmacist can review refills\", () => pm.expect(pm.response.json().permissions).to.include(\"refills:review\"));",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "No token \u2192 401 [TC-004]",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Patients",
+      "item": [
+        {
+          "name": "Search patients",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients?q=turner&page_size=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "turner"
+                },
+                {
+                  "key": "page_size",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"paginated envelope\", () => pm.expect(b).to.have.keys(\"items\",\"total\",\"page\",\"page_size\"));",
+                  "pm.test(\"every result matches\", () => b.items.forEach(p => pm.expect((p.first_name+\" \"+p.last_name).toLowerCase()).to.include(\"turner\")));",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create patient",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Postman\",\n  \"last_name\": \"{{unique_last}}\",\n  \"date_of_birth\": \"1988-08-08\",\n  \"phone\": \"+970 59 222 3333\",\n  \"email\": \"postman.patient@example.com\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201 Created\", () => pm.response.to.have.status(201));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"patient code format\", () => pm.expect(b.patient_code).to.match(/^P-\\d+$/));",
+                  "pm.collectionVariables.set(\"patient_id\", b.id);",
+                  "pm.collectionVariables.set(\"patient_updated_at\", b.updated_at);",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"unique_last\", \"Test\" + Array.from({length:8},()=>\"abcdefghijklmnopqrstuvwxyz\"[Math.floor(Math.random()*26)]).join(\"\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Validation errors \u2192 422 [TC-026]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"\",\n  \"last_name\": \"X\",\n  \"date_of_birth\": \"2999-01-01\",\n  \"email\": \"not-an-email\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"422\", () => pm.response.to.have.status(422));",
+                  "const fields = pm.response.json().error.details.map(d => d.field);",
+                  "pm.test(\"lists invalid fields\", () => { pm.expect(fields).to.include(\"first_name\"); pm.expect(fields).to.include(\"email\"); pm.expect(fields).to.include(\"date_of_birth\"); });",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Duplicate patient \u2192 409 [TC-009]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"john\",\n  \"last_name\": \"TURNER\",\n  \"date_of_birth\": \"1985-06-14\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"code PATIENT_DUPLICATE\", () => pm.expect(pm.response.json().error.code).to.eql(\"PATIENT_DUPLICATE\"));",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update patient phone",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients/{{patient_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patient_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+970 59 444 5555\",\n  \"updated_at\": \"{{patient_updated_at}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"phone saved\", () => pm.expect(pm.response.json().phone).to.eql(\"+970 59 444 5555\"));",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Stale update \u2192 409 [TC-012]",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients/{{patient_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patient_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+970 59 000 0000\",\n  \"updated_at\": \"{{patient_updated_at}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"409 STALE_WRITE\", () => { pm.response.to.have.status(409); pm.expect(pm.response.json().error.code).to.eql(\"STALE_WRITE\"); });",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Support sees masked contact [TC-013]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{support_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients/{{patient_id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patient_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"contact masked\", () => { pm.expect(b.contact_masked).to.be.true; pm.expect(b.phone).to.eql(\"***-***-5555\"); pm.expect(b.date_of_birth).to.be.null; });",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Unknown patient \u2192 404",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/patients/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "999999"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"404\", () => pm.response.to.have.status(404));",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Prescriptions & refills",
+      "item": [
+        {
+          "name": "Create prescription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/prescriptions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prescriptions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"medication_id\": 8,\n  \"prescriber_name\": \"Dr. Postman Fictional\",\n  \"dosage_instructions\": \"1 tablet once daily\",\n  \"quantity\": 30,\n  \"refills_authorized\": 2,\n  \"start_date\": \"2026-11-01\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"remaining = authorized\", () => pm.expect(b.refills_remaining).to.eql(b.refills_authorized));",
+                  "pm.collectionVariables.set(\"rx_id\", b.id);",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Quantity 1001 \u2192 422 [TC-015]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/prescriptions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "prescriptions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": \"{{patient_id}}\",\n  \"medication_id\": 9,\n  \"prescriber_name\": \"Dr. X\",\n  \"dosage_instructions\": \"daily\",\n  \"quantity\": 1001,\n  \"refills_authorized\": 1,\n  \"start_date\": \"2026-11-01\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"422 on quantity\", () => { pm.response.to.have.status(422); pm.expect(pm.response.json().error.details[0].field).to.eql(\"quantity\"); });",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Submit refill",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/refill-requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "refill-requests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prescription_id\": \"{{rx_id}}\",\n  \"notes\": \"Postman\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"pending\", () => pm.expect(b.status).to.eql(\"pending\"));",
+                  "pm.collectionVariables.set(\"refill_id\", b.id);",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Duplicate pending refill \u2192 409 [TC-018]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/refill-requests",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "refill-requests"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prescription_id\": \"{{rx_id}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"409 REFILL_DUPLICATE\", () => { pm.response.to.have.status(409); pm.expect(pm.response.json().error.code).to.eql(\"REFILL_DUPLICATE\"); });",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Support approves \u2192 403 [TC-005]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{support_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/refill-requests/{{refill_id}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "refill-requests",
+                "{{refill_id}}",
+                "approve"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"403 FORBIDDEN\", () => pm.response.to.have.status(403));",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pharmacist approves",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/refill-requests/{{refill_id}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "refill-requests",
+                "{{refill_id}}",
+                "approve"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"approved and decremented\", () => { pm.expect(b.status).to.eql(\"approved\"); pm.expect(b.refills_remaining).to.eql(1); });",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Approve again \u2192 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/refill-requests/{{refill_id}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "refill-requests",
+                "{{refill_id}}",
+                "approve"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"409 INVALID_TRANSITION\", () => { pm.response.to.have.status(409); pm.expect(pm.response.json().error.code).to.eql(\"INVALID_TRANSITION\"); });",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pending refill queue",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/refill-requests?status=pending&page_size=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "refill-requests"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                },
+                {
+                  "key": "page_size",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"all pending\", () => pm.response.json().items.forEach(r => pm.expect(r.status).to.eql(\"pending\")));",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. Support tickets",
+      "item": [
+        {
+          "name": "Create ticket",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{support_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tickets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "tickets"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subject\": \"Postman: refill queue not refreshing\",\n  \"description\": \"Created by the Postman collection run.\",\n  \"category\": \"refill\",\n  \"priority\": \"high\",\n  \"reporter_name\": \"Postman\",\n  \"related_request_id\": \"req_postman00000001\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "const b = pm.response.json();",
+                  "pm.test(\"open\", () => pm.expect(b.status).to.eql(\"open\"));",
+                  "pm.collectionVariables.set(\"ticket_id\", b.id);",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Invalid transition open \u2192 resolved [TC-022]",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{support_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tickets/{{ticket_id}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "tickets",
+                "{{ticket_id}}",
+                "status"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"resolved\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"409\", () => pm.response.to.have.status(409));",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Start investigating",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{support_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tickets/{{ticket_id}}/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "tickets",
+                "{{ticket_id}}",
+                "status"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"investigating\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200 investigating\", () => { pm.response.to.have.status(200); pm.expect(pm.response.json().status).to.eql(\"investigating\"); });",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Convert to bug",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{support_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/tickets/{{ticket_id}}/convert-to-bug",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "tickets",
+                "{{ticket_id}}",
+                "convert-to-bug"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"severity\": \"major\",\n  \"priority\": \"p2\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"linked to ticket\", () => pm.expect(pm.response.json().source_ticket_id).to.eql(pm.collectionVariables.get(\"ticket_id\")));",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. QA & diagnostics",
+      "item": [
+        {
+          "name": "QA metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{qa_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/qa/metrics",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "qa",
+                "metrics"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"has coverage\", () => pm.expect(pm.response.json()).to.have.property(\"coverage\"));",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Pharmacist reads logs \u2192 403",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{pharmacist_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/logs",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "logs"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"403\", () => pm.response.to.have.status(403));",
+                  "pm.test(\"error envelope with request_id\", () => { const e = pm.response.json().error; pm.expect(e).to.have.keys(\"code\",\"message\",\"details\",\"request_id\"); pm.expect(e.request_id).to.eql(pm.response.headers.get(\"X-Request-ID\")); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Recent 4xx logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{qa_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/logs?status_class=4xx&page_size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "logs"
+              ],
+              "query": [
+                {
+                  "key": "status_class",
+                  "value": "4xx"
+                },
+                {
+                  "key": "page_size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"all 4xx\", () => pm.response.json().items.forEach(l => pm.expect(l.status_code).to.be.within(400, 499)));",
+                  "pm.test(\"search terms redacted\", () => pm.response.json().items.forEach(l => { if (l.context.query && l.context.query.q) pm.expect(l.context.query.q).to.eql(\"[REDACTED]\"); }));",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Database consistency checks [TC-030]",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{qa_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/diagnostics/db-checks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "diagnostics",
+                "db-checks"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"200\", () => pm.response.to.have.status(200));",
+                  "pm.response.json().forEach(c => pm.test(\"DB check passes: \" + c.key, () => pm.expect(c.passed, JSON.stringify(c.violations)).to.be.true));",
+                  "pm.test(\"has X-Request-ID header\", () => pm.response.to.have.header(\"X-Request-ID\"));",
+                  "pm.test(\"responds in under 1500 ms\", () => pm.expect(pm.response.responseTime).to.be.below(1500));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "pharmacist_token",
+      "value": ""
+    },
+    {
+      "key": "support_token",
+      "value": ""
+    },
+    {
+      "key": "qa_token",
+      "value": ""
+    },
+    {
+      "key": "patient_id",
+      "value": ""
+    },
+    {
+      "key": "patient_updated_at",
+      "value": ""
+    },
+    {
+      "key": "rx_id",
+      "value": ""
+    },
+    {
+      "key": "refill_id",
+      "value": ""
+    },
+    {
+      "key": "ticket_id",
+      "value": ""
+    },
+    {
+      "key": "unique_last",
+      "value": ""
+    }
+  ]
+}

@@ -1,0 +1,258 @@
+{
+ "framework": "newman",
+ "suite_name": "API contract (Postman/Newman)",
+ "commit_sha": "716bd81dc79a8155b76ac38c96f85e8ebc3f71f0",
+ "branch": "main",
+ "started_at": "2026-11-02T18:18:55.671000+00:00",
+ "duration_ms": 1390,
+ "results": [
+  {
+   "test_name": "Health check",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 26,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Login as pharmacist",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 90,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Login as support",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 95,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Login as qa",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 90,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Login with wrong password \u2192 401 [TC-002]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 92,
+   "error_message": null,
+   "case_code": "TC-002"
+  },
+  {
+   "test_name": "Me (permissions)",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 10,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "No token \u2192 401 [TC-004]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": "TC-004"
+  },
+  {
+   "test_name": "Search patients",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 19,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Create patient",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 23,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Validation errors \u2192 422 [TC-026]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": "TC-026"
+  },
+  {
+   "test_name": "Duplicate patient \u2192 409 [TC-009]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": "TC-009"
+  },
+  {
+   "test_name": "Update patient phone",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 18,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Stale update \u2192 409 [TC-012]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": "TC-012"
+  },
+  {
+   "test_name": "Support sees masked contact [TC-013]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 13,
+   "error_message": null,
+   "case_code": "TC-013"
+  },
+  {
+   "test_name": "Unknown patient \u2192 404",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 10,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Create prescription",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 26,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Quantity 1001 \u2192 422 [TC-015]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 10,
+   "error_message": null,
+   "case_code": "TC-015"
+  },
+  {
+   "test_name": "Submit refill",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 23,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Duplicate pending refill \u2192 409 [TC-018]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 17,
+   "error_message": null,
+   "case_code": "TC-018"
+  },
+  {
+   "test_name": "Support approves \u2192 403 [TC-005]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 12,
+   "error_message": null,
+   "case_code": "TC-005"
+  },
+  {
+   "test_name": "Pharmacist approves",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 23,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Approve again \u2192 409",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 13,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Pending refill queue",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 26,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Create ticket",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 24,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Invalid transition open \u2192 resolved [TC-022]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 13,
+   "error_message": null,
+   "case_code": "TC-022"
+  },
+  {
+   "test_name": "Start investigating",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 23,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Convert to bug",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 17,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "QA metrics",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 26,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Pharmacist reads logs \u2192 403",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 9,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Recent 4xx logs",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 11,
+   "error_message": null,
+   "case_code": null
+  },
+  {
+   "test_name": "Database consistency checks [TC-030]",
+   "file_path": "postman/MediCare-QA-Lab.postman_collection.json",
+   "status": "passed",
+   "duration_ms": 14,
+   "error_message": null,
+   "case_code": "TC-030"
+  }
+ ]
+}
