@@ -27,7 +27,7 @@ function Overview() {
   const { data, isLoading, error, refetch } = useQuery({ queryKey: ["qa-metrics"], queryFn: () => api<Metrics>("/qa/metrics") });
   if (error) return <div className="card"><ErrorState error={error} onRetry={refetch} /></div>;
   if (isLoading || !data) return <div className="grid gap-4 md:grid-cols-3">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-36 rounded-2xl" />)}</div>;
-  const trend = data.trend.map((t) => ({ ...t, x: fmtDate(t.date).replace(/, \d{4}$/, "") }));
+  const trend = data.trend.map((t) => ({ ...t, x: fmtDateTime(t.date) }));
   const maxModule = Math.max(1, ...data.test_cases.by_module.map((m) => m.count));
   return (
     <div className="space-y-4">
@@ -66,7 +66,7 @@ function Overview() {
                     <Tooltip contentStyle={{ borderRadius: 10, border: "1px solid var(--color-line)", fontSize: 13 }}
                       formatter={(v) => [`${v}%`, "Pass rate"]}
                       labelFormatter={(_, p) => { const d = p?.[0]?.payload; return d ? `${d.label} (${d.kind}, ${d.executed} executed)` : ""; }} />
-                    <Line type="monotone" dataKey="pass_rate" stroke="var(--color-teal-600)" strokeWidth={2} dot={{ r: 4, strokeWidth: 2, fill: "#fff" }} activeDot={{ r: 5 }} />
+                    <Line type="linear" dataKey="pass_rate" connectNulls stroke="var(--color-teal-600)" strokeWidth={2} dot={{ r: 4, strokeWidth: 2, fill: "#fff" }} activeDot={{ r: 5 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

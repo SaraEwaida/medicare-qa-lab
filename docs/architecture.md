@@ -98,12 +98,12 @@ These drive both the build order and the test plan. Each will get manual test ca
 
 | ID | Role | Journey | Key checks |
 |---|---|---|---|
-| J1 ★ | Any | Log in with demo account → land on role-appropriate dashboard → log out | Wrong password → 401 with generic message; locked nav items per role |
-| J2 ★ | Pharmacist | Search patient → open profile → edit phone → save | Validation (phone format, required fields), audit entry written |
-| J3 ★ | Pharmacist | Create prescription for patient → submit refill request → approve → status updates everywhere | Duplicate pending refill rejected (409); refills remaining decremented; status refreshes without reload |
-| J4 ★ | Support Engineer | Create ticket (category, priority, diagnostics) → investigate → add internal note → escalate → resolve → close | Valid status transitions only; internal notes hidden from non-support roles; history recorded |
+| J1* | Any | Log in with demo account → land on role-appropriate dashboard → log out | Wrong password → 401 with generic message; locked nav items per role |
+| J2* | Pharmacist | Search patient → open profile → edit phone → save | Validation (phone format, required fields), audit entry written |
+| J3* | Pharmacist | Create prescription for patient → submit refill request → approve → status updates everywhere | Duplicate pending refill rejected (409); refills remaining decremented; status refreshes without reload |
+| J4* | Support Engineer | Create ticket (category, priority, diagnostics) → investigate → add internal note → escalate → resolve → close | Valid status transitions only; internal notes hidden from non-support roles; history recorded |
 | J5 | Support Engineer | Look up a user's request ID in Logs Explorer → find the failing request → link to ticket | Logs redacted; filter by request ID, status code, path |
-| J6 ★ | QA Engineer | Create test case → start test run → record Pass/Fail/Blocked → file bug from failure | Run metrics recompute; bug linked to failed result |
+| J6* | QA Engineer | Create test case → start test run → record Pass/Fail/Blocked → file bug from failure | Run metrics recompute; bug linked to failed result |
 | J7 | Support → QA | Convert support ticket into engineering bug report | Bug pre-filled from ticket; bidirectional link |
 | J8 | QA Engineer | Bug Lab: enable a defect → reproduce in sandbox → inspect logs → disable → regression test passes | Defect never affects non-sandbox data or requests without `X-Demo-Session` |
 | J9 | Any | Unauthorized action (e.g. Support Engineer approving a refill via API) | 403 with request ID; attempt logged |

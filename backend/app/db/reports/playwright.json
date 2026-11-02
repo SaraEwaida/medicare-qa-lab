@@ -1,16 +1,16 @@
 {
  "framework": "playwright",
  "suite_name": "Browser E2E (Playwright)",
- "commit_sha": "716bd81dc79a8155b76ac38c96f85e8ebc3f71f0",
+ "commit_sha": "30090927785c1e39c0a137071a8cc13ac1c0bc67",
  "branch": "main",
- "started_at": "2026-11-02T18:18:58.136000+00:00",
- "duration_ms": 39930,
+ "started_at": "2026-11-02T18:25:12.400000+00:00",
+ "duration_ms": 38796,
  "results": [
   {
    "test_name": "Authentication \u203a [TC-001] pharmacist signs in with valid credentials",
    "file_path": "e2e/tests/auth.spec.ts",
    "status": "passed",
-   "duration_ms": 1350,
+   "duration_ms": 1473,
    "error_message": null,
    "case_code": "TC-001"
   },
@@ -18,7 +18,7 @@
    "test_name": "Authentication \u203a [TC-002] wrong password shows a generic error and stays on login",
    "file_path": "e2e/tests/auth.spec.ts",
    "status": "passed",
-   "duration_ms": 726,
+   "duration_ms": 728,
    "error_message": null,
    "case_code": "TC-002"
   },
@@ -26,7 +26,7 @@
    "test_name": "Authentication \u203a client-side validation blocks an empty form",
    "file_path": "e2e/tests/auth.spec.ts",
    "status": "passed",
-   "duration_ms": 472,
+   "duration_ms": 454,
    "error_message": null,
    "case_code": null
   },
@@ -34,7 +34,7 @@
    "test_name": "Authentication \u203a signing out returns to the login page and protects routes",
    "file_path": "e2e/tests/auth.spec.ts",
    "status": "passed",
-   "duration_ms": 1435,
+   "duration_ms": 1231,
    "error_message": null,
    "case_code": null
   },
@@ -42,7 +42,7 @@
    "test_name": "Bug Lab: reproduce, fix, regression-test \u203a search_case_sensitive reproduces, and [TC-010] passes once fixed",
    "file_path": "e2e/tests/buglab.spec.ts",
    "status": "passed",
-   "duration_ms": 3236,
+   "duration_ms": 3013,
    "error_message": null,
    "case_code": "TC-010"
   },
@@ -50,7 +50,7 @@
    "test_name": "Bug Lab: reproduce, fix, regression-test \u203a refill_status_stale shows stale UI; [TC-017] regression passes with defect off",
    "file_path": "e2e/tests/buglab.spec.ts",
    "status": "passed",
-   "duration_ms": 3459,
+   "duration_ms": 3144,
    "error_message": null,
    "case_code": "TC-017"
   },
@@ -58,7 +58,7 @@
    "test_name": "Patient management \u203a [TC-007] create a patient with valid data",
    "file_path": "e2e/tests/patients.spec.ts",
    "status": "passed",
-   "duration_ms": 2281,
+   "duration_ms": 2445,
    "error_message": null,
    "case_code": "TC-007"
   },
@@ -66,7 +66,7 @@
    "test_name": "Patient management \u203a [TC-008] form shows inline errors for a future date of birth and bad phone",
    "file_path": "e2e/tests/patients.spec.ts",
    "status": "passed",
-   "duration_ms": 2356,
+   "duration_ms": 1755,
    "error_message": null,
    "case_code": "TC-008"
   },
@@ -74,7 +74,7 @@
    "test_name": "Patient management \u203a [TC-010] search is case-insensitive",
    "file_path": "e2e/tests/patients.spec.ts",
    "status": "passed",
-   "duration_ms": 1785,
+   "duration_ms": 2311,
    "error_message": null,
    "case_code": "TC-010"
   },
@@ -82,7 +82,7 @@
    "test_name": "Patient management \u203a [TC-009] duplicate patient shows the existing patient code",
    "file_path": "e2e/tests/patients.spec.ts",
    "status": "passed",
-   "duration_ms": 2317,
+   "duration_ms": 2258,
    "error_message": null,
    "case_code": "TC-009"
   },
@@ -90,7 +90,7 @@
    "test_name": "QA Lab \u203a [TC-025] record pass, fail and blocked results; pass rate recalculates",
    "file_path": "e2e/tests/qa.spec.ts",
    "status": "passed",
-   "duration_ms": 3662,
+   "duration_ms": 3085,
    "error_message": null,
    "case_code": "TC-025"
   },
@@ -98,7 +98,7 @@
    "test_name": "Role-based navigation \u203a [TC-006] each role sees only its permitted modules",
    "file_path": "e2e/tests/rbac.spec.ts",
    "status": "passed",
-   "duration_ms": 1785,
+   "duration_ms": 1868,
    "error_message": null,
    "case_code": "TC-006"
   },
@@ -106,7 +106,7 @@
    "test_name": "Role-based navigation \u203a [TC-013] support engineer sees masked patient contact details",
    "file_path": "e2e/tests/rbac.spec.ts",
    "status": "passed",
-   "duration_ms": 1765,
+   "duration_ms": 1565,
    "error_message": null,
    "case_code": "TC-013"
   },
@@ -114,7 +114,7 @@
    "test_name": "Prescriptions and refill workflow \u203a [TC-014] [TC-017] create prescription, request and approve a refill without reloading",
    "file_path": "e2e/tests/refills.spec.ts",
    "status": "passed",
-   "duration_ms": 3645,
+   "duration_ms": 3584,
    "error_message": null,
    "case_code": "TC-014"
   },
@@ -122,7 +122,7 @@
    "test_name": "Prescriptions and refill workflow \u203a [TC-020] rejecting a refill requires a reason",
    "file_path": "e2e/tests/refills.spec.ts",
    "status": "passed",
-   "duration_ms": 2464,
+   "duration_ms": 2335,
    "error_message": null,
    "case_code": "TC-020"
   },
@@ -130,7 +130,7 @@
    "test_name": "Support Center \u203a [TC-021] [TC-024] create a ticket with diagnostics, investigate, and convert it to a bug",
    "file_path": "e2e/tests/tickets.spec.ts",
    "status": "passed",
-   "duration_ms": 3680,
+   "duration_ms": 3718,
    "error_message": null,
    "case_code": "TC-021"
   },
@@ -138,7 +138,7 @@
    "test_name": "Support Center \u203a [TC-022] escalation requires a note",
    "file_path": "e2e/tests/tickets.spec.ts",
    "status": "passed",
-   "duration_ms": 2332,
+   "duration_ms": 2501,
    "error_message": null,
    "case_code": "TC-022"
   }

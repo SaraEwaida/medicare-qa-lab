@@ -127,7 +127,7 @@ export default function BugLabPage() {
         ))}
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="grid gap-4 2xl:grid-cols-[minmax(0,1fr)_380px]">
         <div className="space-y-4 min-w-0">
           <Card>
             <CardHeader title="Sandbox prescriptions" description="Refill actions here go through the real refill workflow against sandbox data."
@@ -172,7 +172,7 @@ export default function BugLabPage() {
             </div>
           </Card>
         </div>
-        <Card className="h-fit xl:sticky xl:top-20">
+        <Card className="h-fit 2xl:sticky 2xl:top-20">
           <CardHeader title="Last API response" description="What the server actually returned" />
           <div className="px-5 pb-5">
             {!last ? <p className="text-[13px] text-ink-3">Run an action to inspect the raw response.</p> : (

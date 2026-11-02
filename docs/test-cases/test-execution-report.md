@@ -4,9 +4,9 @@ Results of real executions, converted by `scripts/upload_test_report.py` and loa
 
 | Suite | Framework | Executed | Tests | Passed | Failed | Skipped | Duration | Commit |
 |---|---|---|---|---|---|---|---|---|
-| API contract (Postman/Newman) | newman | 2026-11-02 18:18 UTC | 31 | 31 | 0 | 0 | 1.4 s | `716bd81` |
-| Browser E2E (Playwright) | playwright | 2026-11-02 18:18 UTC | 17 | 17 | 0 | 0 | 39.9 s | `716bd81` |
-| Backend unit + integration (pytest) | pytest | 2026-11-02 20:18 UTC | 115 | 115 | 0 | 0 | 8.8 s | `716bd81` |
+| API contract (Postman/Newman) | newman | 2026-11-02 18:25 UTC | 31 | 31 | 0 | 0 | 1.5 s | `3009092` |
+| Browser E2E (Playwright) | playwright | 2026-11-02 18:25 UTC | 17 | 17 | 0 | 0 | 38.8 s | `3009092` |
+| Backend unit + integration (pytest) | pytest | 2026-11-02 18:24 UTC | 115 | 115 | 0 | 0 | 8.6 s | `3009092` |
 
 **Automation coverage:** 30 of 30 manual cases are linked to at least one executed automated test.
 

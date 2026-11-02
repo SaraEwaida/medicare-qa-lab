@@ -137,27 +137,27 @@ Defects (keys): `refill_status_stale` (approve returns a pre-update snapshot, so
 
 ## Role-based access matrix
 
-✅ allowed · 👁 read-only · ❌ denied (403)
+Yes = allowed · Read = read-only · No = denied (403)
 
 | Permission | Pharmacist | Support Engineer | QA Engineer |
 |---|---|---|---|
-| Dashboard | ✅ | ✅ | ✅ |
-| Patients: read | ✅ | 👁 (masked contact info) | 👁 (masked contact info) |
-| Patients: create / edit / deactivate | ✅ | ❌ | ❌ |
-| Prescriptions: read | ✅ | 👁 | 👁 |
-| Prescriptions: create / edit / status | ✅ | ❌ | ❌ |
-| Refills: submit | ✅ | ❌ | ❌ |
-| Refills: approve / reject / dispense | ✅ | ❌ | ❌ |
-| Tickets: create | ✅ | ✅ | ✅ |
-| Tickets: read own | ✅ | ✅ | ✅ |
-| Tickets: read all, internal notes | ❌ | ✅ | 👁 |
-| Tickets: assign, transition, edit, add notes | ❌ | ✅ | ❌ |
-| Tickets: convert to bug | ❌ | ✅ | ✅ |
-| QA test cases / runs: write | ❌ | ❌ | ✅ |
-| QA test cases / runs / metrics: read | ❌ | 👁 | ✅ |
-| Bug reports: create / edit | ❌ | ✅ create only | ✅ |
-| Logs & audit | ❌ | ✅ | ✅ |
-| Bug Lab toggles, sandbox reset | ❌ | ❌ | ✅ |
-| Bug Lab sandbox actions (search, refill, approve) | ❌ | ✅ | ✅ |
+| Dashboard | Yes | Yes | Yes |
+| Patients: read | Yes | Read (masked contact info) | Read (masked contact info) |
+| Patients: create / edit / deactivate | Yes | No | No |
+| Prescriptions: read | Yes | Read | Read |
+| Prescriptions: create / edit / status | Yes | No | No |
+| Refills: submit | Yes | No | No |
+| Refills: approve / reject / dispense | Yes | No | No |
+| Tickets: create | Yes | Yes | Yes |
+| Tickets: read own | Yes | Yes | Yes |
+| Tickets: read all, internal notes | No | Yes | Read |
+| Tickets: assign, transition, edit, add notes | No | Yes | No |
+| Tickets: convert to bug | No | Yes | Yes |
+| QA test cases / runs: write | No | No | Yes |
+| QA test cases / runs / metrics: read | No | Read | Yes |
+| Bug reports: create / edit | No | Yes create only | Yes |
+| Logs & audit | No | Yes | Yes |
+| Bug Lab toggles, sandbox reset | No | No | Yes |
+| Bug Lab sandbox actions (search, refill, approve) | No | Yes | Yes |
 
 The frontend reads the permission list from `/auth/me` to build navigation. Every rule above is also enforced and tested on the API.

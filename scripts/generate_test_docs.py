@@ -8,7 +8,7 @@
 import json
 import sys
 from collections import Counter
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,7 +48,7 @@ def execution_report() -> str:
     for f in reports:
         r = json.loads(f.read_text())
         c = Counter(x["status"] for x in r["results"])
-        when = datetime.fromisoformat(r["started_at"]).strftime("%Y-%m-%d %H:%M UTC")
+        when = datetime.fromisoformat(r["started_at"]).astimezone(UTC).strftime("%Y-%m-%d %H:%M UTC")
         lines.append(f"| {r['suite_name']} | {r['framework']} | {when} | {len(r['results'])} | {c['passed']} | {c['failed']} | "
                      f"{c['skipped']} | {r['duration_ms'] / 1000:.1f} s | `{(r.get('commit_sha') or '')[:7]}` |")
         codes = sorted({x["case_code"] for x in r["results"] if x.get("case_code")})
