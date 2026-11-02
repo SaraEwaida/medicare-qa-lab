@@ -72,7 +72,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
         response.headers["X-Response-Time-ms"] = str(duration)
 
         path = request.url.path
-        if not path.startswith("/api") or path.startswith(_SKIP_PREFIXES):
+        if not path.startswith("/api/") or path.startswith(_SKIP_PREFIXES):
             return response
 
         status = response.status_code

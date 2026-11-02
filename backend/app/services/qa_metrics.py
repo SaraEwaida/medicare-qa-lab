@@ -28,7 +28,9 @@ def metrics(db: Session) -> dict:
     active_cases = db.scalar(select(func.count()).select_from(TestCase).where(~TestCase.is_archived)) or 0
     automated_case_ids = set(db.scalars(select(TestCase.id).where(~TestCase.is_archived, TestCase.is_automated)))
     linked = set(db.scalars(select(AutomationResult.test_case_id).where(AutomationResult.test_case_id.is_not(None))))
-    covered = automated_case_ids | linked
+    # Coverage counts only cases linked to results from an uploaded (really executed) automated run.
+    # `is_automated` is a declaration by the author and is reported separately.
+    covered = linked
     by_module = db.execute(select(TestCase.module, func.count()).where(~TestCase.is_archived)
                            .group_by(TestCase.module).order_by(TestCase.module)).all()
 

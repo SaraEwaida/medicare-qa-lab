@@ -1,0 +1,78 @@
+@import "@fontsource-variable/public-sans";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "tailwindcss";
+
+/*
+  Design tokens — MediCare QA Lab
+  ink      #12262c  text, deep teal-black (never a neutral #111)
+  canvas   #f3f6f7  app background
+  card     #ffffff
+  line     #e1e8ea  borders / dividers
+  teal     #0b7a75  primary actions, brand
+  blue     #2a78d6  data, links
+  green    #1e8a5a  success
+  slab     #0e2f33  sidebar — the one bold surface
+*/
+@theme {
+  --font-sans: "Public Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-ink: #12262c;
+  --color-ink-2: #4a5d63;
+  --color-ink-3: #6f8186;
+  --color-canvas: #f3f6f7;
+  --color-card: #ffffff;
+  --color-line: #e1e8ea;
+  --color-line-strong: #c9d4d8;
+  --color-slab: #0e2f33;
+  --color-slab-2: #164247;
+
+  --color-teal-50: #ecf7f6;
+  --color-teal-100: #d3eeec;
+  --color-teal-600: #0b7a75;
+  --color-teal-700: #08625e;
+
+  --color-sky-50: #edf4fc;
+  --color-sky-600: #2a78d6;
+  --color-sky-700: #1f5fae;
+
+  --color-ok-50: #e9f6ef;
+  --color-ok-700: #1e7a4e;
+  --color-warn-50: #fdf4e3;
+  --color-warn-700: #8a5a00;
+  --color-bad-50: #fdecec;
+  --color-bad-700: #b42323;
+  --color-info-50: #edf4fc;
+  --color-info-700: #1f5fae;
+
+  --color-series-1: #2a78d6;
+  --color-series-2: #1baf7a;
+
+  --radius-card: 14px;
+  --shadow-card: 0 1px 2px rgb(18 38 44 / 0.05), 0 1px 1px rgb(18 38 44 / 0.03);
+  --shadow-pop: 0 12px 32px -8px rgb(18 38 44 / 0.22);
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+    font-feature-settings: "tnum" 1, "cv11" 1;
+  }
+  h1, h2, h3 { @apply text-ink; letter-spacing: -0.01em; }
+  :focus-visible { outline: 2px solid var(--color-teal-600); outline-offset: 2px; border-radius: 6px; }
+  ::selection { background: var(--color-teal-100); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+@layer components {
+  .card { @apply bg-card border border-line rounded-[var(--radius-card)] shadow-[var(--shadow-card)]; }
+  .id-chip { @apply font-mono text-[12px] font-medium text-ink-2 tracking-tight whitespace-nowrap; }
+  .link { @apply text-sky-700 hover:underline underline-offset-2; }
+  .skeleton { @apply animate-pulse rounded-md bg-line/70; }
+}

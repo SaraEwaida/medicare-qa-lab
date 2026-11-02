@@ -74,25 +74,36 @@ def seed_pharmacy(db: Session, rng: random.Random, users: dict[str, User]) -> No
     db.flush()
 
     statuses = ["active"] * 60 + ["refill_due"] * 10 + ["on_hold"] * 5 + ["completed"] * 15 + ["cancelled"] * 10
+    # Documented example: John Turner (P-1001) has an active Lisinopril 10 mg prescription with 3 of 5 refills left.
+    lisinopril = next(m for m in meds if m.name == "Lisinopril" and m.strength == "10 mg")
+    fixed_rx = [(patients[0], lisinopril)]
     for p in patients:
         n = rng.choices([0, 1, 2, 3, 4], weights=[8, 30, 32, 20, 10])[0]
-        for med in rng.sample(meds, n):
-            status = rng.choice(statuses)
-            authorized = rng.randint(0, 6)
-            used = rng.randint(0, authorized)
-            created = max(p.created_at, _ago(rng.uniform(1, 120), rng))
+        choices = [(p, m) for m in rng.sample(meds, n) if not (p is patients[0] and m is lisinopril)]
+        for patient, med in (fixed_rx if p is patients[0] else []) + choices:
+            is_fixed = (patient, med) in fixed_rx
+            status = "active" if is_fixed else rng.choice(statuses)
+            authorized = 5 if is_fixed else rng.randint(0, 6)
+            planned = 2 if is_fixed else rng.randint(0, authorized)
+            created = max(p.created_at, _ago(110 if is_fixed else rng.uniform(1, 120), rng))
+            # Refills happen roughly monthly after the prescription starts; only those already in the past exist.
+            times, t = [], created
+            for _ in range(planned):
+                t = t + timedelta(days=rng.randint(24, 34))
+                if t > NOW - timedelta(hours=6):
+                    break
+                times.append(t)
+            used = len(times)
             rx = Prescription(
                 patient_id=p.id, medication_id=med.id, prescriber_name=rng.choice(D.PRESCRIBERS),
                 dosage_instructions=rng.choice(D.DOSAGES), quantity=rng.choice([30, 30, 60, 90, 14, 1]),
                 refills_authorized=authorized, refills_remaining=authorized - used, start_date=created.date(),
-                end_date=created.date() + timedelta(days=rng.choice([90, 180, 365])) if rng.random() < 0.5 else None,
+                end_date=created.date() + timedelta(days=rng.choice([90, 180, 365])) if rng.random() < 0.5 and not is_fixed else None,
                 status=status, created_by=rng.choice(pharmacists), created_at=created, updated_at=created)
             db.add(rx)
             db.flush()
             # Approved/dispensed refills exactly match refills used, so the DB consistency check holds.
-            t = created
-            for _ in range(used):
-                t = min(t + timedelta(days=rng.randint(20, 35)), NOW - timedelta(hours=2))
+            for t in times:
                 db.add(RefillRequest(prescription_id=rx.id, status=rng.choice(["approved", "dispensed", "dispensed"]),
                                      requested_by=rng.choice(pharmacists), requested_at=t,
                                      reviewed_by=rng.choice(pharmacists), reviewed_at=t + timedelta(hours=rng.randint(1, 20))))
