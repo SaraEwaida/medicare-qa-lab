@@ -8,3 +8,7 @@ playwright-report/
 test-results/
 .pytest_cache/
 coverage/
+
+# backend
+backend/.venv/
+*.egg-info/
